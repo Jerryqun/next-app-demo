@@ -1,0 +1,22 @@
+'use server';
+
+import { revalidatePath } from 'next/cache';
+
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+let data = ['阅读', '写作', '冥想'];
+
+export async function findToDos() {
+  console.log('---', process.env.DB_PASS);
+  return data;
+}
+
+export async function createToDo(prevState, formData) {
+  await sleep(2500);
+  const todo = formData.get('todo');
+  data.push(todo);
+  revalidatePath('/form4');
+  return {
+    message: `add ${todo} success!`,
+  };
+}
